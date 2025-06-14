@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Council Evaluation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        line-height: 1.2;
+        margin: 30px;
+      }
+
+      h2, h3 {
+        text-align: center;
+        margin: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+
+      th, td {
+        border: 1px solid black;
+        padding: 4px;
+        text-align: left;
+      }
+
+      .section {
+        margin-top: 12px;
+      }
+
+      .label {
+        font-weight: bold;
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 10px;
+        line-height: 1.5;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row1, .row2 {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .fc {
+        width: fit-content;
+      }
+
+      img {
+        max-height: 50px;
+        margin-bottom: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2><img src="data:image/png;base64,{{logoBase64}}" alt="Logo" /></h2>
+    <h2>Office of Students' Welfare</h2>
+    <h3>Student Council 2025 - 2026 – Evaluation Sheet</h3>
+
+    <!-- COMPACT PERSONAL DETAILS -->
+    <div class="section">
+      <table>
+        <tr>
+          <td><span class="label">1. Name:</span> {{name}}</td>
+          <td><span class="label">2. Reg No:</span> {{registerNo}}</td>
+          <td><span class="label">3. Mobile No:</span> {{mobile}}</td>
+          <td><span class="label">4. Program:</span> {{program}}</td>
+        </tr>
+        <tr>
+          <td><span class="label">5. School:</span> {{school}}</td>
+          <td><span class="label">6. Gender:</span> {{gender}}</td>
+          <td><span class="label">7. Arrears:</span> {{historyOfArrears}}</td>
+          <td><span class="label">8. State:</span> {{nativeState}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- LEADERSHIP ROLES -->
+    <div class="section">
+      <div class="label">Leadership Roles:</div>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Name of the CC/Organization</th>
+            <th>Role</th>
+            <th>Special Contribution Made</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each leadershipRoles}}
+          <tr>
+            <td>{{inc @index}}</td>
+            <td>{{organization}}</td>
+            <td>{{role}}</td>
+            <td>{{contribution}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SUGGESTIONS -->
+    <div class="section">
+      <div class="label">Suggestions to promote CC events without OD:</div>
+      <div>{{suggestionsForEvents}}</div>
+    </div>
+
+    <div class="section">
+      <div class="label">Suggestions to create awareness on Code of Conduct:</div>
+      <div>{{suggestionsForCodeOfConduct}}</div>
+    </div>
+
+    <div class="section">
+      <div class="label">One aspect in VIT that needs refinement:</div>
+      <div>{{improvementArea}}</div>
+    </div>
+
+    <!-- SKILL GRID -->
+    <div class="section">
+      <table>
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th>Excellent</th>
+            <th>Good</th>
+            <th>Average</th>
+            <th>Below Average</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each skills}}
+          <tr>
+            <td>{{label}}</td>
+            <td>{{#if (eq value "Excellent")}}☑{{else}}☐{{/if}}</td>
+            <td>{{#if (eq value "Good")}}☑{{else}}☐{{/if}}</td>
+            <td>{{#if (eq value "Average")}}☑{{else}}☐{{/if}}</td>
+            <td>{{#if (eq value "Below Average")}}☑{{else}}☐{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <div class="section">
+      <table>
+        <tr>
+          <td class="fc"><span class="label">Recommended for SC (Y/N):</span></td>
+          <td>{{recommended}}</td>
+        </tr>
+        <tr>
+          <td class="fc"><span class="label">Reason:</span></td>
+          <td>{{reason}}</td>
+        </tr>
+        <tr>
+          <td class="fc"><span class="label">Committee(s) Recommended:</span></td>
+          <td>{{recommendedCommittee}}</td>
+        </tr>
+        <tr>
+          <td class="fc"><span class="label">Submitted At:</span></td>
+          <td>{{submittedAt}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- SIGNATURES -->
+    <div class="footer">
+      <div class="row1">
+        <p>Dr. Pradheep T</p>
+        <p>Dr. Varalakshmi M</p>
+        <p>Dr. Mohana Priya A</p>
+      </div>
+      <div class="row2">
+        <p>Dr. Raju J</p>
+        <p>Mr. E S Dinesh Raghavan</p>
+        <p>Dr. Rajasekhar Reddy Mutra</p>
+        <p>Dr. Naiju CD</p>
+      </div>
+    </div>
+  </body>
+</html>

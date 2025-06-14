@@ -1,0 +1,154 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f9fafb;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+  color: #333;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #1f2937;
+}
+
+.dashboard-actions button {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.dashboard-actions button:hover {
+  background-color: #4338ca;
+}
+
+.nameSearch{
+  width: 100%;
+  margin: 8px 0;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+ .nameSearch, .filters input,
+.filters select {
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 220px;
+}
+
+.result-count {
+  margin-bottom: 0.5rem;
+  color: #6b7280;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+.candidate-table th,
+.candidate-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+}
+
+.candidate-table thead {
+  background-color: #f3f4f6;
+}
+
+.candidate-table tr:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.tag-gray {
+  background-color: #6c757d;
+}
+
+.tag-blue {
+  background-color: #007bff;
+}
+
+.tag-red {
+  background-color: #dc3545;
+}
+
+.tag-green {
+  background-color: #28a745;
+}
+
+.tag-orange {
+  background-color: #fd7e14;
+}
+
+.tag-yellow {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.tag-dark {
+  background-color: #343a40;
+}
+
+.tag-default {
+  background-color: #adb5bd;
+}
+
+.pdf-btn-o {
+  margin-top: 0.3rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pdf-btn:hover {
+  background-color: #15803d;
+}
