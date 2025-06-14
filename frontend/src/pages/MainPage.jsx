@@ -16,7 +16,7 @@ export default function MainPage() {
   useEffect(() => {
     const fetchForm = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/forms/${registerNo}`);
+        const res = await fetch(`/api/forms/${registerNo}`);
         const data = await res.json();
         setFormData(data);
       } catch (err) {
@@ -26,7 +26,7 @@ export default function MainPage() {
 
     const fetchRole = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/role", {
+        const res = await fetch("/api/user/role", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -41,7 +41,7 @@ export default function MainPage() {
 
     const fetchCandidate = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/candidates`);
+        const res = await fetch(`/api/candidates`);
         const allCandidates = await res.json();
         const candidate = allCandidates.find(c => c.registerNo === registerNo);
         if (candidate?.rolePreferences) {

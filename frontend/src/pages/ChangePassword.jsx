@@ -18,7 +18,7 @@ export default function ChangePassword() {
   const handleChangePassword = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/user/change-password",
+        "/api/user/change-password",
         form,
         {
           headers: {

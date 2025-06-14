@@ -98,7 +98,7 @@ export default function EvaluationView({ id }) {
     try {
       const candidateId = id.slice(0,-9);
       const res = await fetch(
-        `http://localhost:5000/api/candidates/${candidateId}/status`,
+        `/api/candidates/${candidateId}/status`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -122,7 +122,7 @@ export default function EvaluationView({ id }) {
 
       try {
         const candidateRes = await fetch(
-          `http://localhost:5000/api/candidates/${candidateId}`
+          `/api/candidates/${candidateId}`
         );
         if (!candidateRes.ok) throw new Error("Failed to fetch candidate");
 
@@ -143,7 +143,7 @@ export default function EvaluationView({ id }) {
         }));
 
         const evalRes = await fetch(
-          `http://localhost:5000/api/evaluation/${evaluationId}`
+          `/api/evaluation/${evaluationId}`
         );
         if (evalRes.ok) {
           const evalData = await evalRes.json();
@@ -200,7 +200,7 @@ export default function EvaluationView({ id }) {
       setErrorMessage("");
 
       const res = await fetch(
-        `http://localhost:5000/api/evaluation/${id.slice(0, -9)}`,
+        `/api/evaluation/${id.slice(0, -9)}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -234,7 +234,7 @@ export default function EvaluationView({ id }) {
   };
 
   const downloadPDF = () => {
-    const url = `http://localhost:5000/api/pdf/${id.slice(0, -9)}`;
+    const url = `/api/pdf/${id.slice(0, -9)}`;
     fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error("PDF generation failed");

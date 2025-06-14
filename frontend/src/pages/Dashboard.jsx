@@ -14,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/candidates");
+        const res = await axios.get("/api/candidates");
         setCandidates(res.data);
       } catch (err) {
         alert("Failed to fetch candidates");
@@ -78,7 +78,7 @@ export default function Dashboard() {
         <button
           className="download-zip-btn"
           onClick={() => {
-            window.open("http://localhost:5000/api/pdf/all", "_blank");
+            window.open("/api/pdf/all", "_blank");
           }}
         >
           Download All Evaluation Sheet
@@ -175,7 +175,7 @@ export default function Dashboard() {
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
-                            `http://localhost:5000/api/pdf/${c._id}`,
+                            `/api/pdf/${c._id}`,
                             "_blank"
                           );
                         }}
