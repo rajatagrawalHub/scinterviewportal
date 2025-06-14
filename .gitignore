@@ -3,7 +3,6 @@ node_modules/
 .env
 
 # build
-build/
 dist/
 .next/
 out/
