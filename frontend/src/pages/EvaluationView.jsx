@@ -82,7 +82,6 @@ export default function EvaluationView({ id }) {
   ];
 
   const committeeOptions = [
-    "Academic Council",
     "Alumni",
     "Culturals",
     "Documentation",

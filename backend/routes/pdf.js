@@ -99,39 +99,44 @@ function prepareTemplateData(evalData) {
 
 // ─── Generate Single PDF ───────────────────────────────────────────────
 router.get('/pdf/:id', async (req, res) => {
-  const evalData = await Evaluation.findOne({ candidateId: req.params.id });
-  if (!evalData) return res.status(404).send('Evaluation not found');
+  try {
+    const evalData = await Evaluation.findOne({ candidateId: req.params.id });
+    if (!evalData) return res.status(404).send('Evaluation not found');
 
-  // Dynamically select template based on isReturningMember flag
-  const templateFile = evalData.isReturningMember
-    ? 'evaluation_template_returning.html'
-    : 'evaluation_template_new.html';
+    // Dynamically select template based on isReturningMember flag
+    const templateFile = evalData.isReturningMember
+      ? 'evaluation_template_returning.html'
+      : 'evaluation_template_new.html';
 
-  const templatePath = path.join(__dirname, '../templates', templateFile);
-  const templateHtml = fs.readFileSync(templatePath, 'utf8');
-  const compiled = HandlebarsInstance.compile(templateHtml, {
-    allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true
-  });
+    const templatePath = path.join(__dirname, '../templates', templateFile);
+    const templateHtml = fs.readFileSync(templatePath, 'utf8');
+    const compiled = HandlebarsInstance.compile(templateHtml, {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true
+    });
 
-  const finalHtml = compiled(prepareTemplateData(evalData));
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
+    const finalHtml = compiled(prepareTemplateData(evalData));
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
 
-  const pdfBuffer = await page.pdf({
-    format: 'A4',
-    printBackground: true,
-    margin: { top: '20px', bottom: '20px', left: '20px', right: '20px' }
-  });
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '20px', bottom: '20px', left: '20px', right: '20px' }
+    });
 
-  await browser.close();
+    await browser.close();
 
-  res.set({
-    'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment; filename="evaluation_${evalData.formFields.personalDetails.registerNo}.pdf"`
-  });
-  res.send(pdfBuffer);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="evaluation_${evalData.formFields.personalDetails.registerNo}.pdf"`
+    });
+    res.send(pdfBuffer);
+  }catch (err) {
+    console.error('Error generating PDF:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // ─── Generate All PDFs in ZIP ──────────────────────────────────────────
