@@ -116,7 +116,11 @@ router.get('/pdf/:id', async (req, res) => {
     });
 
     const finalHtml = compiled(prepareTemplateData(evalData));
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
     await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
 
@@ -133,7 +137,7 @@ router.get('/pdf/:id', async (req, res) => {
       'Content-Disposition': `attachment; filename="evaluation_${evalData.formFields.personalDetails.registerNo}.pdf"`
     });
     res.send(pdfBuffer);
-  }catch (err) {
+  } catch (err) {
     console.error('Error generating PDF:', err);
     res.status(500).send('Internal Server Error');
   }
