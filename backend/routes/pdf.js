@@ -116,7 +116,19 @@ router.get('/pdf/:id', async (req, res) => {
     });
 
     const finalHtml = compiled(prepareTemplateData(evalData));
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process', // <- this one doesn't works in Windows
+        '--disable-gpu'
+      ],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome'
+    });
     const page = await browser.newPage();
     await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
 
@@ -133,13 +145,12 @@ router.get('/pdf/:id', async (req, res) => {
       'Content-Disposition': `attachment; filename="evaluation_${evalData.formFields.personalDetails.registerNo}.pdf"`
     });
     res.send(pdfBuffer);
-  }catch (err) {
+  } catch (err) {
     console.error('Error generating PDF:', err);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// ─── Generate All PDFs in ZIP ──────────────────────────────────────────
 router.get('/pdf/all', async (req, res) => {
   const evalList = await Evaluation.find({});
   const archive = archiver('zip', { zlib: { level: 9 } });
