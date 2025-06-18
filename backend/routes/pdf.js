@@ -8,6 +8,7 @@ const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-ac
 const HandlebarsInstance = allowInsecurePrototypeAccess(Handlebars);
 const archiver = require('archiver');
 const Evaluation = require('../models/Evaluation');
+const chromium = require('@sparticuz/chromium');
 
 // ─── Handlebars Helpers ────────────────────────────────────────────────
 HandlebarsInstance.registerHelper('eq', (a, b) => a === b);
@@ -20,7 +21,6 @@ HandlebarsInstance.registerHelper('times', function (n, block) {
   return out;
 });
 
-// ─── Constants ─────────────────────────────────────────────────────────
 const EVENTS = [
   "New Year", "Pongal", "Republic Day", "Primavera", "Yantra", "Quanta", "Women’s Day", "counselling week",
   "University Day", "Alumni Day", "Independence Day", "Engineers Day", "Navy Day", "Newbie fiesta",
@@ -33,7 +33,6 @@ const ROLES = [
   "Event Coordination", "Refreshments", "Invitation & Certificate Distribution", "Involvement in SW Office Work"
 ];
 
-// ─── Template Data Prep ────────────────────────────────────────────────
 function prepareTemplateData(evalData) {
   const f = evalData.formFields;
   const logoPath = path.join(__dirname, '../templates/logo.png');
@@ -47,7 +46,6 @@ function prepareTemplateData(evalData) {
     belowAverage: val === 'Below Average'
   });
 
-  // For skills, we build an array for easier iteration in templates
   const skillFlags = {
     skills: [
       { label: "Communication", value: evalData.skills.communication },
@@ -58,8 +56,6 @@ function prepareTemplateData(evalData) {
     ]
   };
 
-  // Only include leadershipRoles for new members (i.e. when isReturningMember is false),
-  // and filter out any entries where organization, role, and contribution are all empty.
   const leadershipRoles = !evalData.isReturningMember && Array.isArray(f.leadershipRoles)
     ? f.leadershipRoles.filter(item =>
       (item.organization && item.organization.trim()) ||
@@ -97,7 +93,7 @@ function prepareTemplateData(evalData) {
   };
 }
 
-// ─── Generate Single PDF ───────────────────────────────────────────────
+
 router.get('/pdf/:id', async (req, res) => {
   try {
     const evalData = await Evaluation.findOne({ candidateId: req.params.id });
@@ -117,17 +113,9 @@ router.get('/pdf/:id', async (req, res) => {
 
     const finalHtml = compiled(prepareTemplateData(evalData));
     const browser = await puppeteer.launch({
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process', // <- this one doesn't works in Windows
-        '--disable-gpu'
-      ],
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome'
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
     const page = await browser.newPage();
     await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
@@ -161,7 +149,11 @@ router.get('/pdf/all', async (req, res) => {
   });
 
   archive.pipe(res);
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  });
 
   for (const evalData of evalList) {
     try {
