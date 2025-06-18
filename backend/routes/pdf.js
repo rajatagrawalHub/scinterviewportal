@@ -99,24 +99,30 @@ router.get('/pdf/:id', async (req, res) => {
     const evalData = await Evaluation.findOne({ candidateId: req.params.id });
     if (!evalData) return res.status(404).send('Evaluation not found');
 
-    // Dynamically select template based on isReturningMember flag
+    // Dynamically select template
     const templateFile = evalData.isReturningMember
       ? 'evaluation_template_returning.html'
       : 'evaluation_template_new.html';
 
     const templatePath = path.join(__dirname, '../templates', templateFile);
     const templateHtml = fs.readFileSync(templatePath, 'utf8');
-    const compiled = HandlebarsInstance.compile(templateHtml, {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true
-    });
+    const compiled = HandlebarsInstance.compile(templateHtml);
 
     const finalHtml = compiled(prepareTemplateData(evalData));
+    
+    // Configure Chromium for Render
+    chromium.setGraphicsMode = false;
+    
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(
+        process.env.CHROMIUM_PATH || 
+        '/opt/render/.cache/chromium/chrome-linux64/chrome'
+      ),
       headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
+
     const page = await browser.newPage();
     await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
 
