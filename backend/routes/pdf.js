@@ -115,7 +115,7 @@ router.get('/pdf/:id', async (req, res) => {
     
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: process.env.CHROMIUM_PATH || chromium.executablePath,
+      executablePath: chromium.executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     });
