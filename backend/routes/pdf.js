@@ -90,8 +90,8 @@ function prepareTemplateData(evalData) {
     nativeState: f.personalDetails.nativeState,
     events,
     roles,
-    otherEvents,  // ✅ Add this
-    otherRoles,   // ✅ And this
+    otherEvents,  
+    otherRoles,  
     suggestionsForEvents: f.suggestionsForEvents,
     suggestionsForCodeOfConduct: f.suggestionsForCodeOfConduct,
     improvementArea: f.improvementArea,
@@ -99,6 +99,7 @@ function prepareTemplateData(evalData) {
     recommended: evalData.recommended ? 'Yes' : 'No',
     reason: evalData.reason,
     submittedAt: evalData.submittedAt?.toDateString() || '',
+    recommendedCommittee: f.recommendedCommittee || [],
     ...skillFlags
   };
 }
@@ -165,7 +166,7 @@ router.get('/pdf/:id', async (req, res) => {
     const compiled = HandlebarsInstance.compile(templateHtml);
     const finalHtml = compiled(prepareTemplateData(evalData));
 
-    const browser = await chromium.launch({ headless: true }); // ✅ Playwright here
+    const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
     await page.setContent(finalHtml, { waitUntil: 'networkidle' });
 
