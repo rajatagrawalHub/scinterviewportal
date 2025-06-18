@@ -62,6 +62,22 @@ function prepareTemplateData(evalData) {
     )
     : [];
 
+  const eventsCoordinated = f.eventsCoordinated || [];
+  const rolesSelected = f.rolesAndResponsibilities || [];
+
+  const events = EVENTS.map(e => ({
+    label: e,
+    checked: eventsCoordinated.includes(e)
+  }));
+  const roles = ROLES.map(r => ({
+    label: r,
+    checked: rolesSelected.includes(r)
+  }));
+
+  // Compute unlisted ("Other") values
+  const otherEvents = eventsCoordinated.filter(e => !EVENTS.includes(e)).join(', ');
+  const otherRoles = rolesSelected.filter(r => !ROLES.includes(r)).join(', ');
+
   return {
     logoBase64,
     name: f.personalDetails.name,
@@ -72,14 +88,10 @@ function prepareTemplateData(evalData) {
     gender: f.personalDetails.gender,
     historyOfArrears: f.personalDetails.historyOfArrears ? 'Yes' : 'No',
     nativeState: f.personalDetails.nativeState,
-    events: EVENTS.map(e => ({
-      label: e,
-      checked: f.eventsCoordinated?.includes(e)
-    })),
-    roles: ROLES.map(r => ({
-      label: r,
-      checked: f.rolesAndResponsibilities?.includes(r)
-    })),
+    events,
+    roles,
+    otherEvents,  // ✅ Add this
+    otherRoles,   // ✅ And this
     suggestionsForEvents: f.suggestionsForEvents,
     suggestionsForCodeOfConduct: f.suggestionsForCodeOfConduct,
     improvementArea: f.improvementArea,
@@ -90,6 +102,7 @@ function prepareTemplateData(evalData) {
     ...skillFlags
   };
 }
+
 
 router.get('/pdf/all', async (req, res) => {
   const evalList = await Evaluation.find({});

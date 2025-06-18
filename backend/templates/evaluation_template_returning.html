@@ -11,7 +11,8 @@
         margin: 30px;
       }
 
-      h2, h3 {
+      h2,
+      h3 {
         text-align: center;
         margin: 0;
       }
@@ -22,7 +23,8 @@
         margin-top: 8px;
       }
 
-      th, td {
+      th,
+      td {
         border: 1px solid black;
         padding: 4px;
         text-align: left;
@@ -55,7 +57,8 @@
         gap: 12px;
       }
 
-      .row1, .row2 {
+      .row1,
+      .row2 {
         display: flex;
         justify-content: space-around;
       }
@@ -101,7 +104,9 @@
         <div class="checkbox-item">
           {{#if this.checked}}☑{{else}}☐{{/if}} {{this.label}}
         </div>
-        {{/each}}
+        {{/each}} {{#if otherEvents}}
+        <div class="checkbox-item"><strong>Other:</strong> {{otherEvents}}</div>
+        {{/if}}
       </div>
     </div>
 
@@ -113,7 +118,9 @@
         <div class="checkbox-item">
           {{#if this.checked}}☑{{else}}☐{{/if}} {{this.label}}
         </div>
-        {{/each}}
+        {{/each}} {{#if otherRoles}}
+        <div class="checkbox-item"><strong>Other:</strong> {{otherRoles}}</div>
+        {{/if}}
       </div>
     </div>
 
@@ -124,7 +131,9 @@
     </div>
 
     <div class="section">
-      <div class="label">Suggestions to create awareness on Code of Conduct:</div>
+      <div class="label">
+        Suggestions to create awareness on Code of Conduct:
+      </div>
       <div>{{suggestionsForCodeOfConduct}}</div>
     </div>
 
@@ -163,7 +172,9 @@
     <div class="section">
       <table>
         <tr>
-          <td class="fc"><span class="label">Recommended for SC (Y/N):</span></td>
+          <td class="fc">
+            <span class="label">Recommended for SC (Y/N):</span>
+          </td>
           <td>{{recommended}}</td>
         </tr>
         <tr>
