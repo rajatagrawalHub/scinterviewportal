@@ -21,7 +21,7 @@ HandlebarsInstance.registerHelper('times', function (n, block) {
 });
 
 const EVENTS = [
-  "New Year", "Pongal", "Republic Day", "Primavera", "Yantra", "Quanta", "Women’s Day", "counselling week",
+  "New Year", "Pongal", "Republic Day", "Primavera", "Yantra", "Quanta", "Women’s Day", "Counselling week",
   "University Day", "Alumni Day", "Independence Day", "Engineers Day", "Navy Day", "Newbie fiesta",
   "Regional New Year", "Gravitas", "Quality Week", "Suicide Prevention Day", "ISRO Lecture"
 ];
