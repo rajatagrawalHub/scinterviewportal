@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const Handlebars = require('handlebars');
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const HandlebarsInstance = allowInsecurePrototypeAccess(Handlebars);
@@ -110,14 +110,9 @@ router.get('/pdf/:id', async (req, res) => {
 
     const finalHtml = compiled(prepareTemplateData(evalData));
 
-    // Configure Chromium for Render
-    chromium.setGraphicsMode = false;
-
     const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     console.log('Using Chromium at:', await chromium.executablePath);
@@ -155,9 +150,8 @@ router.get('/pdf/all', async (req, res) => {
 
   archive.pipe(res);
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   for (const evalData of evalList) {
